@@ -36,7 +36,7 @@ catch(error)
   }
  }
 
-async curretUser(){
+async currentUser(){
 try{
   return await this.account.get();
 }
