@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { authService } from "../appwrite/auth";
 
-function Login() {
+function login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
@@ -56,6 +56,38 @@ function Login() {
         </p>
         {error && <p className="text-red-600  mt-8 text-center">
           {error}</p>}
+          <form onSumbit = {handleSubmit(login)} 
+          className = "mt-8">
+           <div className = "space-y-5">
+            <input 
+            label = "Email"
+            placeholder="Enter your Email"
+            type = "email"
+            {...register("email" , {
+              required : true ,
+              validate : {
+                matchPattern : (value) => 
+                /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || "Please enter a valid email address",
+              }
+            })}
+            />
+            <input 
+            label = "Password"
+            placeholder="Enter your Password"
+            type="Password"
+            {...register("password" ,{
+              required : true ,
+              minLength : {
+                value : 8 ,
+                message : "Password must be at least 8 characters long"
+              }
+            })}
+            />
+            <Button type="submit" className = "w-full">
+              Sign In 
+            </Button>
+           </div>
+          </form>
       </div>
     </div>
   );
