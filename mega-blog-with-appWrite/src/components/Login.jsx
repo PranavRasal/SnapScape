@@ -36,7 +36,7 @@ function login() {
       rounded-xl p-10 border border-black/10 `}
       >
         <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full  max-w-[100px]">
+          <span className="inline-block w-full max-w-[100px]">
             <Logo width="100%" />
           </span>
         </div>
@@ -58,7 +58,7 @@ function login() {
           {error}</p>}
           <form onSumbit = {handleSubmit(login)} 
           className = "mt-8">
-           <div className = "space-y-5">
+          <div className = "space-y-5">
             <input 
             label = "Email"
             placeholder="Enter your Email"
