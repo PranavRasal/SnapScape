@@ -3,12 +3,18 @@ import { Container , Postcard } from '../components/index'
 import service from '../appwrite/config'
 function allPost() {
   const [posts , setPosts] = useState([]) ; 
-  useEffect(()=>{},[])
-   service.getposts([]).then((posts)=>{
+  useEffect(()=>{
+    service.getposts([]).then((posts)=>{
      if(posts){
        setPosts(posts.documents);
      }
    })
+  },[])
+  //  service.getposts([]).then((posts)=>{
+  //    if(posts){
+  //      setPosts(posts.documents);
+  //    }
+  //  })
 
   return (
     <div className='w-full  py-8'>
