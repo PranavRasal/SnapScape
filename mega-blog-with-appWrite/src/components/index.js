@@ -4,7 +4,10 @@ import Footer from './Footer/Footer'
 import Container from './container/container'
 import Logo from '../componets/Logo'
 import LogoutBtn from './Header/logoutBtn'
-
+import Signup from './Signup'
+import Login from './Login'
+import PostForm from './post-form/PostForm'
+import Postcard from './Postcard'
 
 
 export default {
@@ -12,5 +15,9 @@ export default {
   Footer,
   Container,
   Logo,
-  LogoutBtn
+  LogoutBtn,
+  Signup,
+  Login,
+  PostForm,
+  Postcard
 }
