@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import service from "../appwrite/config";
 import { login as authLogin } from "../store/authSlice";
-import { Button, input, Logo } from "../components/index";
+import { Button, Input, Logo } from "../components/index";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import { authService } from "../appwrite/auth";
+import  authService  from "../appwrite/auth";
 
-function login() {
+function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
@@ -36,7 +35,7 @@ function login() {
       rounded-xl p-10 border border-black/10 `}
       >
         <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full max-w-[100px]">
+          <span className="inline-block w-full max-w-25">
             <Logo width="100%" />
           </span>
         </div>
@@ -56,10 +55,10 @@ function login() {
         </p>
         {error && <p className="text-red-600  mt-8 text-center">
           {error}</p>}
-          <form onSumbit = {handleSubmit(login)} 
+          <form onSubmit = {handleSubmit(login)} 
           className = "mt-8">
           <div className = "space-y-5">
-            <input 
+            <Input 
             label = "Email"
             placeholder="Enter your Email"
             type = "email"
@@ -71,7 +70,7 @@ function login() {
               }
             })}
             />
-            <input 
+            <Input 
             label = "Password"
             placeholder="Enter your Password"
             type="Password"

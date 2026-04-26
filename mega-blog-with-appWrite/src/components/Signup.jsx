@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import authService from "../appwrite/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Button, input, Logo } from "../components/index";
+import { Button, Input, Logo } from "../components/index";
 import { useDispatch } from "react-redux";
 import { login } from "../store/authSlice";
 
@@ -52,14 +52,14 @@ function Signup() {
         {error && <p className="text-red-600  mt-8 text-center">{error}</p>}
           <form onSubmit={handleSubmit(create)}>
             <div className="space-y-5">
-              <input 
+              <Input 
               label = " full name"
               placeholder="Enter your full name"
               {...register("name " , {
                 required : true
               })}
               />
-              <input 
+              <Input 
               label = "Email"
               placeholder="Enter your Email"
               type = "email"
@@ -70,7 +70,7 @@ function Signup() {
               /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || "Please enter a valid email address",}
               })}
               />
-              <input 
+              <Input 
               label = "Password"
               placeholder="Enter your Password"
               type = "password"

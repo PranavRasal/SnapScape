@@ -1,5 +1,5 @@
 import React , {useEffect , useState} from 'react'
-import{container , PostForm } from '../components/index'
+import{Container , PostForm } from '../components/index'
 import service from '../appwrite/config'
 function Home() {
   const [posts , setPosts] = useState([]);
@@ -24,17 +24,17 @@ function Home() {
  }
  return(
   <div className='min-h-screen flex flex-col'>
-    <container>
+    <Container>
       <div className='py-5 flex-1 grid md:grid-cols-2 lg:grid-cols-3 gap-5'>
         {
           posts.map((post)=>{
-            <div key={post.$id} className="w-1/4 p-2">
+             return <div key={post.$id} className="w-1/4 p-2">
             <PostForm {...post}/>
             </div>
           })
         }
        </div>
-    </container>
+    </Container>
      </div>
  )
 

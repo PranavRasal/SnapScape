@@ -1,16 +1,19 @@
-import { useState , useEffect, use } from 'react'
+import { useState , useEffect } from 'react'
 import {useDispatch} from 'react-redux'
 import './App.css'
 import authService from './appwrite/auth'
 import { login, logout } from './store/authSlice'
-import Header from './componets/header/header'
-import Footer from './componets/Footer/Footer'
+import Header from './components/Header/Header'
+import Footer from './components/Footer/Footer'
+import { Outlet } from 'react-router-dom'
 
 function App() {
  const[loading,setLoading] = useState(true)
  const dispatch = useDispatch()
+
+
  useEffect(()=>{
-  authService.curretUser().then((userData)=>{
+  authService.currentUser().then((userData)=>{
     if(userData){
     dispatch(login({userData}))
   }else{
@@ -24,7 +27,9 @@ function App() {
     <div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
      <div className='w-full block'>
      <Header/>
-    <h1>hello</h1>
+    <main >
+     <Outlet/>
+    </main>
    <Footer/>
   </div>
     </div>

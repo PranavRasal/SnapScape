@@ -1,6 +1,15 @@
 import  conf  from "../conf/conf.js";
 import { Client, Account, ID } from "appwrite";
 
+function isPausedProjectError(error) {
+  const message = error?.message || "";
+  return error?.code === 403 && message.includes("Project is paused due to inactivity");
+}
+
+function pausedProjectMessage() {
+  return "Appwrite project is paused due to inactivity. Restore it from the Appwrite console, then try again.";
+}
+
 export class AuthService{
      client = new Client();
      account;
@@ -22,6 +31,9 @@ else{
  return userAccount;
 }
     }catch(error){
+     if (isPausedProjectError(error)) {
+    throw new Error(pausedProjectMessage());
+     }
        throw error;
     }
 }
@@ -32,6 +44,9 @@ try{
 }
 catch(error)
 {
+    if (isPausedProjectError(error)) {
+      throw new Error(pausedProjectMessage());
+    }
     throw error;  
   }
  }
@@ -42,6 +57,10 @@ try{
 }
 catch(error)
 {
+    if (isPausedProjectError(error)) {
+      console.warn("Appwrite service :: getCurrentUser ::", pausedProjectMessage());
+      return null;
+    }
     console.log("Appwrite service :: getCurrentUser :: error", error);
     return null;
   }
