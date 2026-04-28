@@ -74,7 +74,7 @@ export default function Post() {
                 </div>
                 <div className="w-full bg-gray-50 rounded-lg p-8 mb-6">
                     <div className="browser-css text-lg leading-relaxed text-gray-800">
-                        {post.content ? parse(post.content) : <p>No content available</p>}
+                        {post.body || post.content ? parse(post.body || post.content) : <p>No content available</p>}
                     </div>
                 </div>
             </Container>

@@ -16,13 +16,14 @@ constructor(){
 
 async createpost({title , slug , content , featureImage , status , userId}){ // create post with all necessary fields
 try {
+    const contentSnippet = (content && typeof content === 'string') ? content.substring(0, 255) : '';
     return await this.database.createDocument(
         conf.appwriteDatabaseID,
         conf.appwriteTableID,
         slug,
         {
-        title, 
-        content,
+        title,
+        content: contentSnippet,
         image: featureImage,
         status,
         userID: userId
@@ -37,15 +38,16 @@ catch (error)
 
 async updatepost(slug,{title , content , featureImage , status }){ // update post with all necessary fields
 try {
+    const contentSnippet = (content && typeof content === 'string') ? content.substring(0, 255) : '';
     return await this.database.updateDocument(
         conf.appwriteDatabaseID,
         conf.appwriteTableID,
         slug,
         {
-            title , 
-            content ,
-            image: featureImage , 
-            status 
+            title,
+            content: contentSnippet,
+            image: featureImage,
+            status
             }
     );
 } catch (error) {

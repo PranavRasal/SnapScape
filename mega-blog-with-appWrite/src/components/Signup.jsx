@@ -19,7 +19,8 @@ function Signup() {
       if (userData) {
         const userData = await authService.currentUser();
         if (userData) {
-          dispatch(login(userData));
+          console.log('✅ Dispatching login with userData:', userData);
+          dispatch(login({ userData }));
           navigate("/");
         }
       }

@@ -57,6 +57,7 @@ export default function PostForm({post}) {
       })
         if(dbPost){
           console.log('✓ Post updated successfully with image:', dbPost.image);
+          window.dispatchEvent(new Event('postUpdated'));
           navigate(`/post/${dbPost.$id}`);
         } 
   }
@@ -88,8 +89,7 @@ export default function PostForm({post}) {
       userId: userData.$id
     })
     if(dbPost){
-      console.log('✓ Post created successfully:', dbPost.$id, 'with image:', dbPost.image);
-      navigate(`/post/${dbPost.$id}`);
+      console.log('✓ Post created successfully:', dbPost.$id, 'with image:', dbPost.image);      window.dispatchEvent(new Event('postCreated'));      navigate(`/post/${dbPost.$id}`);
     } else {
       console.error('\u2717 Post creation failed');
     }
@@ -135,8 +135,8 @@ export default function PostForm({post}) {
   return (
      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap gap-y-6">
             <div className="w-full lg:w-2/3 px-2 space-y-6">
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <h2 className="mb-4 text-lg font-semibold text-gray-900">Post details</h2>
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm text-[var(--text)] transition-colors duration-300">
+                <h2 className="mb-4 text-lg font-semibold text-[var(--text)]">Post details</h2>
                 <input
                     label="Title :"
                     placeholder="Title"
@@ -153,14 +153,14 @@ export default function PostForm({post}) {
                     }}
                 />
               </div>
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <h2 className="mb-4 text-lg font-semibold text-gray-900">Message</h2>
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm text-[var(--text)] transition-colors duration-300">
+                <h2 className="mb-4 text-lg font-semibold text-[var(--text)]">Message</h2>
                 <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
               </div>
             </div>
             <div className="w-full lg:w-1/3 px-2 space-y-4">
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <h2 className="mb-4 text-lg font-semibold text-gray-900">Featured image</h2>
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm text-[var(--text)] transition-colors duration-300">
+                <h2 className="mb-4 text-lg font-semibold text-[var(--text)]">Featured image</h2>
                 <input
                     label="Featured Image :"
                     type="file"
@@ -181,7 +181,7 @@ export default function PostForm({post}) {
                     </div>
                 )}
               </div>
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm text-[var(--text)] transition-colors duration-300">
                 <Select
                     options={["active", "inactive"]}
                     label="Status"

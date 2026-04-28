@@ -1,8 +1,11 @@
 import React , {useEffect , useState} from 'react'
 import{Container , Postcard } from '../components/index'
 import service from '../appwrite/config'
+import { useSelector } from 'react-redux'
+
 function Home() {
   const [posts , setPosts] = useState([]);
+  const authStatus = useSelector((state) => state.auth.status);
 
   useEffect(()=>{
    service.getposts().then((posts)=>{
@@ -11,13 +14,13 @@ function Home() {
       setPosts(posts.documents);
     }
    })
-  },[])
+  },[authStatus])
  if(posts.length === 0){
   return (
     <div className='min-h-screen flex flex-col'>
     <Container>
       <div className='py-5 flex-1 flex items-center justify-center'>
-      <h2 className='text-center'>No posts yet</h2>
+      <h2 className='text-center text-(--text)'>No posts yet</h2>
        </div>
     </Container>
      </div>
@@ -29,7 +32,7 @@ function Home() {
       <div className='py-5 flex-1 grid md:grid-cols-2 lg:grid-cols-3 gap-5'>
         {
           posts.map((post)=>{
-             return <Postcard key={post.$id} $id={post.$id} title={post.title} content={post.content} featuredImage={post.image} />
+             return <Postcard key={post.$id} $id={post.$id} title={post.title} content={post.body || post.content} featuredImage={post.image} />
           })
         }
        </div>

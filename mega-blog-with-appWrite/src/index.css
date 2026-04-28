@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+  --page-bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: #cbd5e1;
+}
+
+:root[data-theme='dark'] {
+  --page-bg: #0f172a;
+  --surface: #111827;
+  --surface-2: #1f2937;
+  --text: #f8fafc;
+  --muted: #cbd5e1;
+  --border: #334155;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--text);
+  transition: background-color 200ms ease, color 200ms ease;
+}
