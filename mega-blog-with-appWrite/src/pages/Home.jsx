@@ -1,5 +1,5 @@
 import React , {useEffect , useState} from 'react'
-import{Container , PostForm } from '../components/index'
+import{Container , Postcard } from '../components/index'
 import service from '../appwrite/config'
 function Home() {
   const [posts , setPosts] = useState([]);
@@ -7,6 +7,7 @@ function Home() {
   useEffect(()=>{
    service.getposts().then((posts)=>{
     if(posts){
+      console.log('✓ Posts loaded from DB:', posts.documents.map(p => ({id: p.$id, title: p.title, hasImage: !!p.image})));
       setPosts(posts.documents);
     }
    })
@@ -14,11 +15,11 @@ function Home() {
  if(posts.length === 0){
   return (
     <div className='min-h-screen flex flex-col'>
-    <container>
+    <Container>
       <div className='py-5 flex-1 flex items-center justify-center'>
       <h2 className='text-center'>No posts yet</h2>
        </div>
-    </container>
+    </Container>
      </div>
   )
  }
@@ -28,9 +29,7 @@ function Home() {
       <div className='py-5 flex-1 grid md:grid-cols-2 lg:grid-cols-3 gap-5'>
         {
           posts.map((post)=>{
-             return <div key={post.$id} className="w-1/4 p-2">
-            <PostForm {...post}/>
-            </div>
+             return <Postcard key={post.$id} $id={post.$id} title={post.title} content={post.content} featuredImage={post.image} />
           })
         }
        </div>

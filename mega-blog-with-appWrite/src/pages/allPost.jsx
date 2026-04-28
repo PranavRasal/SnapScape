@@ -6,6 +6,7 @@ function allPost() {
   useEffect(()=>{
     service.getposts([]).then((posts)=>{
      if(posts){
+       console.log('✓ All posts loaded:', posts.documents.map(p => ({id: p.$id, title: p.title, image: p.image})));
        setPosts(posts.documents);
      }
    })
@@ -22,7 +23,7 @@ function allPost() {
         <div className = "flex flex-wrap gap-4">
         {posts.map((post)=>(
           <div key={post.$id} className='w-full md:w-1/2 lg:w-1/3'>
-          <Postcard post={post} />
+          <Postcard $id={post.$id} title={post.title} content={post.content} featuredImage={post.image} />
           </div>
           ))}
         </div>

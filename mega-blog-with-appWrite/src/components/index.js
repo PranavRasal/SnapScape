@@ -27,8 +27,8 @@ export {
   AuthLayout,
   Input,
   Select,
-  Input as input,
-  Select as select,
+  // Input as Input,
+  // select as Select,
 }
 
   // export default {

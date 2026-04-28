@@ -1,4 +1,4 @@
-import React , {useCallback,useEffect} from 'react'
+import React , {useCallback, useEffect, useState} from 'react'
 import {useForm } from 'react-hook-form';
 import RTE from '../RTE';
 import Button from '../Button';
@@ -10,10 +10,12 @@ import {useSelector } from 'react-redux';
 
 
 export default function PostForm({post}) {
+  const [imagePreview, setImagePreview] = useState(null);
+  
   const {register , handleSubmit , control , watch , setValue , getValues} = useForm({
       defaultValues : {
         title : post?.title || '',
-        contend : post?.contend || '',
+        content : post?.content || '',
         slug : post?.slug || '',
         status : post?.status || 'active',
       }
@@ -24,38 +26,70 @@ export default function PostForm({post}) {
   
 
   const submit =async (data) => {//create or edit  function create it can edit title , contend and update or add image if user not have image  
+    console.log('📝 Form submitted with data:', {title: data.title, hasContent: !!data.content, contentLength: data.content?.length, slug: data.slug});
     
     if(post){   // if post exist then update title , contend and image if user upload new one FOR EDIT POST 
 
      //if user upload new image then update post with new image and delete old one
-      const file = data.image[0] ? service.uploadfile(data.image[0]) : null; 
-
-      // delete old one
-      if (file){
-      service.deletefile(post.featureImage)
+      let fileId = post.image || '';
+      if(data.image[0]) {
+        console.log('📸 Uploading new image:', data.image[0].name);
+        const file = await service.uploadfile(data.image[0]); 
+        if(file) {
+          // delete old one if it exists
+          if (post.image){
+            console.log('🗑 Deleting old image:', post.image);
+            await service.deletefile(post.image)
+          }
+          fileId = file.$id;
+          console.log('\u2713 Image uploaded successfully. New FileID:', fileId);
+        }
       }
 
-    const dbPost = await service.updatepost(post.$id ,{...data ,
-          featureImage : file ? file.$id : undefined 
-          // if user  upload new image then update post with new image id else keep old one
+      console.log('💾 Updating post with image:', fileId);
+      const dbPost = await service.updatepost(post.$id ,{
+        title: data.title,
+        content: data.content,
+        featureImage: fileId,
+        status: data.status
       })
         if(dbPost){
+          console.log('✓ Post updated successfully with image:', dbPost.image);
           navigate(`/post/${dbPost.$id}`);
         } 
   }
   else { // if post not exist then create new one with title , contend and image if user upload one  FOR CREATE POST
     
-    // if user upload image then upload it and get file id else set file id to null
-    const file = data.image[0] ? service.uploadfile(data.image[0]) : null; 
+    // if user upload image then upload it and get file id else set file id to empty string
+    let fileId = '';
+    if(data.image[0]) {
+      console.log('\ud83d\udcb8 Uploading image:', data.image[0].name);
+      const file = await service.uploadfile(data.image[0]); 
+      if(file) {
+        fileId = file.$id;
+        console.log('\u2713 Image uploaded successfully. FileID:', fileId);
+      } else {
+        console.error('\u2717 Image upload failed');
+      }
+    } else {
+      console.warn('\u26a0 No image selected');
+    }
 
-    if(file){
-      data.featureImage = file.$id; // set featureImage to file id if user upload image
-      const dbPost = await service.createpost({...data , 
-        userId : userData.$id // set userId to current user id
-        })
-        if(dbPost){
-          navigate(`/post/${dbPost.$id}`);
-        }
+    // create post with all required fields
+    console.log('💾 Creating post with image:', fileId);
+    const dbPost = await service.createpost({
+      title: data.title,
+      slug: data.slug,
+      content: data.content,
+      featureImage: fileId,
+      status: data.status,
+      userId: userData.$id
+    })
+    if(dbPost){
+      console.log('✓ Post created successfully:', dbPost.$id, 'with image:', dbPost.image);
+      navigate(`/post/${dbPost.$id}`);
+    } else {
+      console.error('\u2717 Post creation failed');
     }
   }
 
@@ -81,6 +115,20 @@ export default function PostForm({post}) {
       subscription.unsubscribe();
     }
   },[watch , slugTransform , setValue])
+
+  // Handle image preview
+  useEffect(() => {
+    const watchImage = watch((data) => {
+      if (data.image && data.image[0]) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(data.image[0]);
+      }
+    });
+    return () => watchImage.unsubscribe();
+  }, [watch]);
 
   return (
      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
@@ -110,12 +158,15 @@ export default function PostForm({post}) {
                     accept="image/png, image/jpg, image/jpeg, image/gif"
                     {...register("image", { required: !post })}
                 />
-                {post && (
+                {post && post.featureImage && post.featureImage.trim() && (
                     <div className="w-full mb-4">
                         <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
+                            src={service.getFilePreview(post.featureImage)}
                             alt={post.title}
                             className="rounded-lg"
+                            onError={(e) => {
+                                e.target.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22256%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22400%22 height=%22256%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2216%22 fill=%22%236b7280%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3EFailed to load%3C/text%3E%3C/svg%3E';
+                            }}
                         />
                     </div>
                 )}

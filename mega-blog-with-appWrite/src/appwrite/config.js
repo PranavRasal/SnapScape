@@ -22,11 +22,10 @@ try {
         slug,
         {
         title, 
-        slug,
         content,
-        featureImage,
+        image: featureImage,
         status,
-        userId
+        userID: userId
         }
     )
 } 
@@ -45,7 +44,7 @@ try {
         {
             title , 
             content ,
-            featureImage , 
+            image: featureImage , 
             status 
             }
     );
@@ -123,11 +122,33 @@ try {
 }
 
 // get file preview
-getfilepreview(fileID){
-    return this.bucket.getFilePreview(
-        conf.appwriteBucketID,
-        fileID
-    );
+getFilePreview(fileID){
+    try {
+        if (!fileID || fileID.trim() === '') {
+            console.warn('⚠ Empty fileID provided to getFilePreview');
+            return null;
+        }
+        // Construct URL manually to ensure proper formatting
+        const url = `${conf.appwriteURL}/storage/buckets/${conf.appwriteBucketID}/files/${fileID}/view?project=${conf.appwriteProjectID}`;
+        console.log('✓ Preview URL created for:', fileID, 'URL:', url);
+        return url;
+    } catch (error) {
+        console.error('✗ Error getting file preview for:', fileID, error);
+        return null;
+    }
+}
+
+// CamelCase aliases for consistency
+getPost(slug) {
+    return this.getpost(slug);
+}
+
+deletePost(slug) {
+    return this.deletepost(slug);
+}
+
+deleteFile(fileID) {
+    return this.deletefile(fileID);
 }
 
 }
