@@ -5,4 +5,10 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  optimizeDeps: {
+    include: ['appwrite', 'json-bigint', 'bignumber.js'],
+  },
+  ssr: {
+    noExternal: ['appwrite'],
+  },
 })
