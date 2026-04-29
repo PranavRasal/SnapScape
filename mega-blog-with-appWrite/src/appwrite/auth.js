@@ -25,7 +25,8 @@ async createAccount({email,password,name}){ // create account with email and pas
 const userAccount =  await this.account.create(ID.unique(), email, password, name);
 if(userAccount){
  // Account login after account creation
-this.login({email,password});
+ await this.login({email,password});
+ return userAccount;
 }
 else{
  return userAccount;

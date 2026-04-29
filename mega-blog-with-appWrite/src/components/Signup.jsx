@@ -12,6 +12,8 @@ function Signup() {
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
 
+
+
   const create = async (data) => {
     setError(" ");
     try {
@@ -83,7 +85,7 @@ function Signup() {
                 }
               })}
               />
-              <Button type= "submit" className = "w-full">
+              <Button type= "submit" className = "w-full" >
                 create account
               </Button>
             </div>
