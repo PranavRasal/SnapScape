@@ -9,7 +9,7 @@ import Home from './pages/Home'
 import AllPost from './pages/allPost'
 import   AddPost  from './pages/addPost'
 import EditPost from './pages/editPost'
-import Post from './pages/Post'
+import Post from './pages/post'
 import { AuthLayout , Login , Signup } from './components/index.js'
 
 const router = createBrowserRouter([
