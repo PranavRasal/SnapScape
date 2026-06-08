@@ -6,7 +6,7 @@ A modern blogging platform built with **React**, **Appwrite**, and **Redux Toolk
 
 ## 🚀 Live Demo
 
-> Add your deployed application URL here
+
 
 ```text
 https://mega-react-project-three.vercel.app/
@@ -132,7 +132,7 @@ VITE_APPWRITE_COLLECTION_ID=
 VITE_APPWRITE_BUCKET_ID=
 ```
 
-> Replace the values with your Appwrite project credentials.
+
 
 ---
 
