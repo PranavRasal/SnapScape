@@ -1,5 +1,5 @@
 import  conf  from "../conf/conf.js";
-import { Client, ID , Databases , Query , Storage } from "appwrite";
+import { Client, ID , Databases , Query , Storage, Permission, Role } from "appwrite";
 
 export class Service{
 client = new Client();
@@ -17,6 +17,9 @@ constructor(){
 async createpost({title , slug , content , featureImage , status , userId}){ // create post with all necessary fields
 try {
     const contentSnippet = (content && typeof content === 'string') ? content.substring(0, 255) : '';
+    const permissions = userId
+        ? [Permission.read(Role.any()), Permission.update(Role.user(userId)), Permission.delete(Role.user(userId))]
+        : [Permission.read(Role.any())];
     return await this.database.createDocument(
         conf.appwriteDatabaseID,
         conf.appwriteTableID,
@@ -27,7 +30,8 @@ try {
         image: featureImage,
         status,
         userID: userId
-        }
+        },
+        permissions
     )
 } 
 catch (error) 
@@ -36,9 +40,12 @@ catch (error)
 }
 }
 
-async updatepost(slug,{title , content , featureImage , status }){ // update post with all necessary fields
+async updatepost(slug,{title , content , featureImage , status , userId }){ // update post with all necessary fields
 try {
     const contentSnippet = (content && typeof content === 'string') ? content.substring(0, 255) : '';
+    const permissions = userId
+        ? [Permission.read(Role.any()), Permission.update(Role.user(userId)), Permission.delete(Role.user(userId))]
+        : [Permission.read(Role.any())];
     return await this.database.updateDocument(
         conf.appwriteDatabaseID,
         conf.appwriteTableID,
@@ -48,7 +55,8 @@ try {
             content: contentSnippet,
             image: featureImage,
             status
-            }
+            },
+        permissions
     );
 } catch (error) {
     console.log(error);
@@ -77,6 +85,9 @@ try {
         slug
     )
 } catch (error) {
+    if (error?.code === 401 || error?.code === 403) {
+        return false;
+    }
     console.log(error);
     return false;
 }
@@ -90,6 +101,9 @@ try {
         queries
     )
 } catch (error) {
+    if (error?.code === 401 || error?.code === 403) {
+        return false;
+    }
     console.log(error);
     return false;
 }

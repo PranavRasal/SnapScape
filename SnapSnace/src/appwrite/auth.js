@@ -58,6 +58,9 @@ try{
 }
 catch(error)
 {
+    if (error?.code === 401 || error?.code === 403) {
+      return null;
+    }
     if (isPausedProjectError(error)) {
       console.warn("Appwrite service :: getCurrentUser ::", pausedProjectMessage());
       return null;

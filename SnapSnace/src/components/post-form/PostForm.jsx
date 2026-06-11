@@ -53,7 +53,8 @@ export default function PostForm({post}) {
         title: data.title,
         content: data.content,
         featureImage: fileId,
-        status: data.status
+        status: data.status,
+        userId: userData?.$id
       })
         if(dbPost){
           console.log('✓ Post updated successfully with image:', dbPost.image);
