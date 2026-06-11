@@ -85,10 +85,6 @@ try {
         slug
     )
 } catch (error) {
-    if (error?.code === 401 || error?.code === 403) {
-        return false;
-    }
-    console.log(error);
     return false;
 }
 }
@@ -101,10 +97,6 @@ try {
         queries
     )
 } catch (error) {
-    if (error?.code === 401 || error?.code === 403) {
-        return false;
-    }
-    console.log(error);
     return false;
 }
 }
